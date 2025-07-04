@@ -6,7 +6,8 @@ export interface ICartItem {
 }
 
 export interface ICart extends Document {
-  guestId: string;
+  userId?: any;
+  guestId?: any
   items: ICartItem[];
 }
 
@@ -16,7 +17,8 @@ const cartItemSchema = new Schema<ICartItem>({
 });
 
 const cartSchema = new Schema<ICart>({
-  guestId: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User", required: false }, // 회원 장바구니
+  guestId: { type: String, required: false },                            // 비회원 장바구니
   items: { type: [cartItemSchema], default: [] },
 });
 

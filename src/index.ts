@@ -18,8 +18,8 @@ app.use(
     credentials: true, // <- 반드시 필요 (쿠키 허용)
   })
 );
-app.use(cookieParser());
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("API 서버가 실행 중입니다! (TS)");
