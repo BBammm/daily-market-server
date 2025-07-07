@@ -1,20 +1,9 @@
 import express from "express";
 import { CartModel } from "../models/cart";
 import { Product } from "../models/product";
-import jwt from "jsonwebtoken";
+import { getUserIdFromReq } from "../utils/authUtils";
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 
-function getUserIdFromReq(req: any) {
-  const token = req.cookies.accessToken;
-  if (!token) return null;
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
-    return decoded.userId;
-  } catch {
-    return null;
-  }
-}
 
 async function getCartWithProductInfo(userId?: string, guestId?: string) {
   const query: any = userId ? { userId } : { guestId };
