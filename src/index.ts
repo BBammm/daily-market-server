@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes";
 import productsRoutes from "./routes/productsRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import orderRoutes from "./routes/orderRoutes"
+import pointsRoute from "./routes/pointRoutes";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/api/products", productsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/points", pointsRoute);
 
 // DB 연결 후 서버 시작
 connectDB().then(() => {
