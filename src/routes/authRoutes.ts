@@ -7,10 +7,14 @@ import { UserModel } from "../models/user";
 const JWT_SECRET = process.env.JWT_SECRET || "secret123";
 const router = Router();
 
-router.post("/guest", (req, res) => {
-  const guestId = uuidv4();
-  res.cookie("guestId", guestId, { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 7 });
-  res.json({ guestId });
+router.get("/guest", (req: any, res: any) => {
+  let guestId = req.cookies.guestId;
+  if (!guestId) {
+    guestId = uuidv4();
+    res.cookie("guestId", guestId, { httpOnly: false, maxAge: 1000 * 60 * 60 * 24 * 7, sameSite: "lax" });
+    return res.json({ guestId, created: true });
+  }
+  res.json({ guestId, created: false });
 });
 
 router.post("/register", async (req: any, res: any) => {

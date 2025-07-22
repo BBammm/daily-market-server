@@ -51,4 +51,30 @@ router.post("/", async (req: any, res: any) => {
   res.json({ success: true, orderId: order._id });
 });
 
+router.get("/history", async (req: any, res: any) => {
+  const userId = getUserIdFromReq(req);
+  const guestId = req.cookies.guestId;
+
+  // start, end: ms 단위(UNIX epoch millis)
+  const start = Number(req.query.start);
+  const end = Number(req.query.end);
+
+  if ((!userId && !guestId) || !start || !end) {
+    return res.status(400).json({ error: "필수값 없음" });
+  }
+
+  const query: any = {
+    createdAt: {
+      $gte: new Date(start),
+      $lte: new Date(end),
+    },
+  };
+  if (userId) query.userId = userId;
+  else query.guestId = guestId;
+
+  const orders = await OrderModel.find(query).sort({ createdAt: -1 }).lean();
+
+  res.json({ orders });
+});
+
 export default router;
